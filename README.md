@@ -4,7 +4,7 @@ approx-search
 曖昧検索, approximate pattern matching を可能にする Emacs Lisp ラ
 イブラリ.
 
-Susumu OTA <susumu.ota at g mail dot com>
+Susumu OTA  susumu.ota at g mail dot com
 
 
 ## 概要
@@ -47,7 +47,7 @@ Migemo を使った曖昧検索はできません. Migemo に対応すること�
 
 
 (*1) Levenshtein distance (edit distance, 編集距離) については以
-     下を参照.  
+     下を参照.
      http://www.merriampark.com/ld.htm
 
 (*2) http://migemo.namazu.org/
@@ -103,7 +103,7 @@ approx-isearch が無効になります).
 
 [1] approx-search-{forward,backward}
 
-        M-x approx-search-forward
+	M-x approx-search-forward
 	  曖昧検索を使って STRING を point から前方検索して見つかった位置を返す.
 
 	M-x approx-search-backward
