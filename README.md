@@ -4,6 +4,8 @@ approx-search
 曖昧検索, approximate pattern matching を可能にする Emacs Lisp ラ
 イブラリ.
 
+Susumu OTA <susumu.ota at g mail dot com>
+
 
 ## 概要
 
@@ -23,8 +25,8 @@ approx-search
 リでは入力から曖昧検索の正規表現を生成します. 具体的にはこんな感
 じです.
 
-  (approx-generate-regexp "abcd")
-  => "\\(bcd\\|acd\\|abd\\|abc\\|a.cd\\|ab.d\\|ab.cd\\)"
+	(approx-generate-regexp "abcd")
+	=> "\\(bcd\\|acd\\|abd\\|abc\\|a.cd\\|ab.d\\|ab.cd\\)"
 
 この生成された正規表現を `re-search-forward' に渡して曖昧検索を実
 現しています. 入力された文字数を N 個とすると, だいたい 3N 個程度
@@ -45,7 +47,7 @@ Migemo を使った曖昧検索はできません. Migemo に対応すること�
 
 
 (*1) Levenshtein distance (edit distance, 編集距離) については以
-     下を参照.
+     下を参照.  
      http://www.merriampark.com/ld.htm
 
 (*2) http://migemo.namazu.org/
@@ -58,19 +60,19 @@ Migemo を使った曖昧検索はできません. Migemo に対応すること�
 かなりテキトーなものですが, Makefile を付属しました. Makefile の
 先頭部分を適当に編集した後,
 
-  % make
-  % make install
+	% make
+	% make install
 
 でインストールできます.
 
 ~/.emacs に
 
-  (add-to-list 'load-path "~/elisp")
-  (require 'approx-search)
-  (if (boundp 'isearch-search-fun-function)
-      (require 'approx-isearch)
-    (require 'approx-old-isearch))
-  (approx-isearch-set-enable)
+	(add-to-list 'load-path "~/elisp")
+	(require 'approx-search)
+	(if (boundp 'isearch-search-fun-function)
+	    (require 'approx-isearch)
+	  (require 'approx-old-isearch))
+	(approx-isearch-set-enable)
 
 と書きます.
 
@@ -79,21 +81,21 @@ M-x migemo-toggle-isearch-enable で Migemo を無効にした場合のみ
 approx-isearch が有効にできます(逆に Migemo を有効にしたら
 approx-isearch が無効になります).
 
-  (add-to-list 'load-path "~/elisp")
-  (require 'approx-search)
-  (if (boundp 'isearch-search-fun-function)
-      (require 'approx-isearch)
-    (require 'approx-old-isearch))
+	(add-to-list 'load-path "~/elisp")
+	(require 'approx-search)
+	(if (boundp 'isearch-search-fun-function)
+	    (require 'approx-isearch)
+	  (require 'approx-old-isearch))
 
-  (if migemo-isearch-enable-p
-      (approx-isearch-set-disable)
-    (approx-isearch-set-enable))
+	(if migemo-isearch-enable-p
+	    (approx-isearch-set-disable)
+	  (approx-isearch-set-enable))
 
-  (defadvice migemo-toggle-isearch-enable (before approx-ad-migemo-toggle-isearch-enable activate)
-    "migemo を使う時は approx-search を使わない."
-    (if migemo-isearch-enable-p
-        (approx-isearch-set-enable) ; NOT disable!!! before advice なので
-      (approx-isearch-set-disable)))
+	(defadvice migemo-toggle-isearch-enable (before approx-ad-migemo-toggle-isearch-enable activate)
+	  "migemo を使う時は approx-search を使わない."
+	  (if migemo-isearch-enable-p
+	      (approx-isearch-set-enable) ; NOT disable!!! before advice なので
+	    (approx-isearch-set-disable)))
 
 
 
@@ -101,36 +103,36 @@ approx-isearch が無効になります).
 
 [1] approx-search-{forward,backward}
 
-  M-x approx-search-forward
-    曖昧検索を使って STRING を point から前方検索して見つかった位置を返す.
+        M-x approx-search-forward
+	  曖昧検索を使って STRING を point から前方検索して見つかった位置を返す.
 
-  M-x approx-search-backward
-    曖昧検索を使って STRING を point から後方検索して見つかった位置を返す.
+	M-x approx-search-backward
+	  曖昧検索を使って STRING を point から後方検索して見つかった位置を返す.
 
-    例:
-      (approx-search-forward "approximately")
-      (approx-search-backward "approximately")
-        "aproximately", "appproximately", "apploximately" にもマッチする.
+	  例:
+	    (approx-search-forward "approximately")
+	    (approx-search-backward "approximately")
+	      "aproximately", "appproximately", "apploximately" にもマッチする.
 
-  M-x approx-set-ambiguousness
-    曖昧度を設定する. この値を大きくすると許容できる曖昧度が増す.
-    デフォルトは 1.
+	M-x approx-set-ambiguousness
+	  曖昧度を設定する. この値を大きくすると許容できる曖昧度が増す.
+	  デフォルトは 1.
 
 
 [2] isearch
 
-  M-x approx-isearch-enable-p
-    曖昧検索を使った isearch が有効か否かを返す.
+	M-x approx-isearch-enable-p
+	  曖昧検索を使った isearch が有効か否かを返す.
 
-  M-x approx-isearch-set-enable
-    曖昧検索を使った isearch を有効にする.
+	M-x approx-isearch-set-enable
+	  曖昧検索を使った isearch を有効にする.
 
-  M-x approx-isearch-set-disable
-    曖昧検索を使った isearch を無効にする.
+	M-x approx-isearch-set-disable
+	  曖昧検索を使った isearch を無効にする.
 
-  M-x approx-isearch-toggle-enable
-    曖昧検索を使った isearch の有効/無効を切り換える.
+	M-x approx-isearch-toggle-enable
+	  曖昧検索を使った isearch の有効/無効を切り換える.
 
-  変数 approx-isearch-auto-p
-    通常の search で見つからなかった場合のみ曖昧検索を行う.
-    デフォルトは nil.
+	変数 approx-isearch-auto-p
+	  通常の search で見つからなかった場合のみ曖昧検索を行う.
+	  デフォルトは nil.
